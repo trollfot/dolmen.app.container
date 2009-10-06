@@ -3,13 +3,13 @@ from os.path import join
 
 name = 'dolmen.app.container'
 version = '0.1'
-readme = open("README.txt").read()
-history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
+readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
+history = open(join('docs', 'HISTORY.txt')).read()
 
 setup(name = name,
       version = version,
       description = 'Dolmen CMS content types',
-      long_description = readme[readme.find('\n\n'):] + '\n' + history,
+      long_description = readme + '\n\n' + history,
       keywords = 'Grok Zope3 CMS Dolmen',
       author = 'Souheil Chelfouh',
       author_email = 'souheil@chelfouh.com',
@@ -25,8 +25,11 @@ setup(name = name,
       install_requires=[
           'setuptools',
           'dolmen.content',
+          'dolmen.forms.crud',
+          'dolmen.app.layout',
           'zope.app.container',
           'grokcore.component',
+          'grokcore.viewlet',
           'menhir.library.tablesorter',
       ],
       classifiers = [
