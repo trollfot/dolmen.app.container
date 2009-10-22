@@ -1,4 +1,6 @@
-<dl class="add-menu incontext-action" tal:condition="viewlet/factories">
+<dl id="add-menu"
+    class="menu additional-actions"
+    tal:condition="viewlet/factories">
   <dt>Add to folder</dt>
   <dd>
     <ul>

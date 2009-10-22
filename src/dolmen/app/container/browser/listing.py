@@ -11,6 +11,7 @@ from menhir.library.tablesorter import SimpleTableSorter
 from megrok.z3ctable import NameColumn, LinkColumn, ModifiedColumn
 
 _ = MessageFactory("dolmen")
+grok.templatedir("templates")
 
 
 class FolderListing(models.TablePage, models.TabView):
@@ -34,9 +35,7 @@ class FolderListing(models.TablePage, models.TabView):
     def update(self):
         SimpleTableSorter.need()
         models.TablePage.update(self)
-
-    def render(self):
-        return models.TablePage.render(self)
+        self.table = self.renderTable()
 
 
 class Title(LinkColumn):
