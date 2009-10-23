@@ -3,7 +3,8 @@
     xmlns:grok="http://namespaces.zope.org/grok">
 
   <!-- Grok components -->
-  <include package="grokcore.viewlet" file="meta.zcml" />
+  <include package="grok" file="meta.zcml" />
+  <include package="megrok.resourcelibrary" file="meta.zcml" />
 
   <!-- Dolmen dependencies -->
   <include package="dolmen.content" />

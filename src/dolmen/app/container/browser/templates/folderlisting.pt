@@ -1,4 +1,5 @@
 <div class="folder-listing">
+  <script type="text/javascript" tal:content="structure view/ajax_url" />
   <h1 tal:content="context/title" />
   <div tal:content="structure view/table" />
 </div>

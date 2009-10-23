@@ -1,17 +1,46 @@
 # -*- coding: utf-8 -*-
 
-import grokcore.view as grok
+import grok
+import megrok.resourcelibrary
+
 from ZODB.broken import PersistentBroken
 from zope.component import queryMultiAdapter
 from zope.i18nmessageid import MessageFactory
+from zope.security.management import checkPermission
 
-from dolmen.content import IContainer
 from dolmen.app.layout import models, ISortable
-from menhir.library.tablesorter import SimpleTableSorter
+from dolmen.content import IContainer, IOrderedContainer
+from menhir.library.tablesorter import SimpleTableSorter, TableDnD
 from megrok.z3ctable import NameColumn, LinkColumn, ModifiedColumn
 
 _ = MessageFactory("dolmen")
 grok.templatedir("templates")
+
+
+class ContainerOrderingLibrary(megrok.resourcelibrary.ResourceLibrary):
+    megrok.resourcelibrary.depend(TableDnD)
+    megrok.resourcelibrary.directory('resources')
+    megrok.resourcelibrary.include('container.reorder.js')
+    
+
+class ContainerOrderingJSON(grok.JSON):
+    grok.context(IOrderedContainer)
+    grok.require('dolmen.content.Edit')
+          
+    def updateContainerOrder(self):       
+        newOrder = self.request.get("newOrder")
+        if not newOrder or not isinstance(newOrder, list):
+            return
+        
+        keys = self.context.keys()
+        
+        order = []
+        for item in newOrder:
+            if item.startswith("id_"):
+                id = int(item[3:])
+                order.append(keys[id])
+
+        self.context.updateOrder(order)
 
 
 class FolderListing(models.TablePage, models.TabView):
@@ -23,7 +52,6 @@ class FolderListing(models.TablePage, models.TabView):
     
     batchSize = 20
     startBatchingAt = 20
-    cssClasses = {'table': 'listing sortable'}
     cssClassEven = u'even'
     cssClassOdd = u'odd'
     sortOn = None
@@ -34,6 +62,25 @@ class FolderListing(models.TablePage, models.TabView):
 
     def update(self):
         SimpleTableSorter.need()
+        self.cssClasses = {'table': 'listing sortable'}
+        models.TablePage.update(self)
+        self.table = self.renderTable()
+
+
+class OrderedFolderListing(FolderListing):
+    grok.name('base_view')
+    grok.title(_(u"Content"))
+    grok.context(IOrderedContainer)
+    
+    def update(self):
+        if checkPermission("dolmen.content.Edit", self.context):
+            ContainerOrderingLibrary.need()
+            self.ajax_url = "var updateContainerOrder = '%s/updateContainerOrder'" % self.url(self.context)
+            self.cssClasses = {'table': 'listing orderable'}
+        else:
+            SimpleTableSorter.need()
+            self.cssClasses = {'table': 'listing sortable'}
+
         models.TablePage.update(self)
         self.table = self.renderTable()
 
