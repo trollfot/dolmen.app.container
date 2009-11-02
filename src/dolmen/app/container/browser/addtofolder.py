@@ -16,7 +16,7 @@ class AddMenu(grok.Viewlet):
     grok.order(60)
     grok.view(IDisplayView)
     grok.context(dolmen.IContainer)
-    grok.viewletmanager(master.DolmenAboveBody)
+    grok.viewletmanager(master.AboveBody)
     grok.require("dolmen.content.Add")
 
     

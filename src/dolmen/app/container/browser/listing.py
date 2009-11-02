@@ -8,7 +8,7 @@ from zope.component import queryMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.security.management import checkPermission
 
-from dolmen.app.layout import models, ISortable
+from dolmen.app import layout
 from dolmen.content import IContainer, IOrderedContainer
 from menhir.library.tablesorter import SimpleTableSorter, TableDnD
 from megrok.z3ctable import NameColumn, LinkColumn, ModifiedColumn
@@ -43,11 +43,10 @@ class ContainerOrderingJSON(grok.JSON):
         self.context.updateOrder(order)
 
 
-class FolderListing(models.TablePage, models.TabView):
+class FolderListing(layout.TablePage, layout.ContextualMenuEntry):
     grok.name('base_view')
     grok.title(_(u"Content"))
     grok.context(IContainer)
-    grok.implements(ISortable)
     grok.require('dolmen.content.List')
     
     batchSize = 20
@@ -63,7 +62,7 @@ class FolderListing(models.TablePage, models.TabView):
     def update(self):
         SimpleTableSorter.need()
         self.cssClasses = {'table': 'listing sortable'}
-        models.TablePage.update(self)
+        layout.TablePage.update(self)
         self.table = self.renderTable()
 
 
@@ -75,13 +74,12 @@ class OrderedFolderListing(FolderListing):
     def update(self):
         if checkPermission("dolmen.content.Edit", self.context):
             ContainerOrderingLibrary.need()
-            self.ajax_url = "var updateContainerOrder = '%s/updateContainerOrder'" % self.url(self.context)
             self.cssClasses = {'table': 'listing orderable'}
         else:
             SimpleTableSorter.need()
             self.cssClasses = {'table': 'listing sortable'}
 
-        models.TablePage.update(self)
+        layout.TablePage.update(self)
         self.table = self.renderTable()
 
 
