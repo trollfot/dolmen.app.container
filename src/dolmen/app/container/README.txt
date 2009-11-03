@@ -78,13 +78,14 @@ If a name is provided, it is used if possible::
   'furry elephant'
 
 If the name already exists, it adds a number at the end of the id. To
-do that, the name chooser will try all the values from 0 to 100::
+do that, the name chooser will try all the values from 0 to 100 and
+keep the first successful combination::
 
   >>> folder['manfred'] = object()
   >>> chooser.chooseName(name='', object=manfred)
   'manfred_1'
 
-If there are no solutions, an error is raised::
+If there is no solution, an error is raised::
 
   >>> for i in range(0, 101):
   ...   folder['manfred_%d' % i] = object()
@@ -102,9 +103,8 @@ Permissions
 -----------
 
 `dolmen.app.container` registers a viewlet listing the
-`dolmen.content` factories. It exposes the factories allowed in the
-container and with permissions matching the current principal's
-rights.
+`dolmen.content` factories. It displays the factories allowed in the
+container. It checks the principal's permissions in the process.
 
 The viewlet is registered for the 'AboveBody' viewlet manager::
 
@@ -158,9 +158,10 @@ We now log a principal with no privileges::
   >>> endInteraction()
   >>> newInteraction(Participation(Principal('zope.judith')))
 
-If we try to render the viewlet, now, we see that the Folder factory is
-not available, as it is protected by the 'dolmen.content.Add'
-permission. The Document factory is available as it's not protected::
+If we now try to render the viewlet, the Folder factory should not be
+available, as it is protected by the 'dolmen.content.Add'
+permission. The Document factory should be available as it's not
+protected::
 
   >>> viewlet.update()
   >>> for factory in viewlet.factories: print factory['name']
@@ -185,8 +186,8 @@ We test to see if everything is back to normal::
   dolmen.app.container.ftests.Folder
   dolmen.app.container.ftests.Document
 
-We apply a constraint on the folder. It will now only be able to
-contain IDocument objects::
+We apply a constraint on the folder. It will only be able to contain
+IDocument objects::
 
   >>> from zope.interface import alsoProvides
   >>> from zope.app.container.constraints import contains
@@ -206,9 +207,8 @@ We check the respect of the constraint::
 Listing
 =======
 
-To complete the container tools, `dolmen.app.container` registers a
-view in charge of displaying the content of a container in a table
-form.
+To complete the container's tools, `dolmen.app.container` registers a
+view in charge of displaying the content of a container as a table.
 
 First, we reset the container::
 
