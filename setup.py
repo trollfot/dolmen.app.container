@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.app.container'
-version = '0.1'
+version = '0.2dev'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
@@ -24,7 +24,7 @@ tests_require = install_requires + [
 
 setup(name = name,
       version = version,
-      description = 'Dolmen CMS content types',
+      description = 'Containers tools for Dolmen applications',
       long_description = readme + '\n\n' + history,
       keywords = 'Grok Zope3 CMS Dolmen',
       author = 'Souheil Chelfouh',
