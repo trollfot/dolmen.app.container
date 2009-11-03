@@ -264,3 +264,9 @@ The rendering displays links with icons (if existing)::
     </tbody>
   </table></div>
   </div>
+
+
+Credits
+=======
+
+All Dolmen packages are sponsorised by NPAI (http://www.npai.fr)
