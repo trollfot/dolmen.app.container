@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import grokcore.component as grok
-
+import grok
 from unicodedata import normalize
 from dolmen.content import IBaseContent, IContainer
 from zope.app.container.interfaces import INameChooser
 
+ATTEMPTS = 100
 
 class NormalizingNameChooser(grok.Adapter):
     grok.context(IContainer)
@@ -20,7 +20,7 @@ class NormalizingNameChooser(grok.Adapter):
             return name
 
         idx = 1
-        while idx <= 100:
+        while idx <= ATTEMPTS:
             new_name = "%s_%d" % (name, idx)
             if not new_name in self.context:
                 return new_name
@@ -28,7 +28,7 @@ class NormalizingNameChooser(grok.Adapter):
 
         raise ValueError(
             "Cannot find a unique name based on "
-            "%s after %d attemps." % (name, ATTEMPTS,)
+            "`%s` after %d attemps." % (name, ATTEMPTS)
             )
 
     def chooseName(self, name, object):

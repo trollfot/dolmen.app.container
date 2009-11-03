@@ -6,7 +6,7 @@
     <ul>
       <li tal:repeat="factory viewlet/factories">
 	<a href=""
-	   tal:attributes="id factory/name;
+	   tal:attributes="id factory/id;
 			   href factory/url;
 			   title factory/description;
 			   alt factory/description">
