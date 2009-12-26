@@ -3,7 +3,7 @@
 import grok
 from unicodedata import normalize
 from dolmen.content import IBaseContent, IContainer
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 ATTEMPTS = 100
 
