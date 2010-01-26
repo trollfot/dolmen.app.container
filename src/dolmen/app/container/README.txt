@@ -61,7 +61,7 @@ We now create a simple content type::
 To use the namechooser, we simply adapt our container to the
 INameChooser interfaces::
 
-  >>> from zope.app.container.interfaces import INameChooser
+  >>> from zope.container.interfaces import INameChooser
   >>> chooser = INameChooser(folder)
   >>> chooser
   <dolmen.app.container.namechoosers.NormalizingNameChooser object at ...>
@@ -190,7 +190,7 @@ We apply a constraint on the folder. It will only be able to contain
 IDocument objects::
 
   >>> from zope.interface import alsoProvides
-  >>> from zope.app.container.constraints import contains
+  >>> from zope.container.constraints import contains
 
   >>> class IDocumentRepository(Interface):
   ...   contains(IDocument)

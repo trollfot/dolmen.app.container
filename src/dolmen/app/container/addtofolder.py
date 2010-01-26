@@ -5,8 +5,8 @@ import dolmen.content
 from dolmen.app import security, layout
 
 from zope.security.management import checkPermission
-from zope.app.container.interfaces import IContainer
-from zope.app.container.constraints import checkFactory
+from zope.container.interfaces import IContainer
+from zope.container.constraints import checkFactory
 from zope.component import getUtilitiesFor, getMultiAdapter
 
 grok.templatedir("templates")

@@ -5,7 +5,7 @@ import grok
 from ZODB.broken import PersistentBroken
 from zope.interface import Interface
 from zope.component import queryMultiAdapter
-from zope.app.container.interfaces import IContainer
+from zope.container.interfaces import IContainer
 
 from dolmen.app import security, layout
 from dolmen.app.container import mf as _
