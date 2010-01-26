@@ -2,8 +2,8 @@
 
 import grok
 import dolmen.content
-from dolmen.app import security, layout
 
+from dolmen.app import security, layout
 from zope.security.management import checkPermission
 from zope.container.interfaces import IContainer
 from zope.container.constraints import checkFactory
