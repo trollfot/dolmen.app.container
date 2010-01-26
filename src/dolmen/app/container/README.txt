@@ -37,7 +37,7 @@ We create our container type::
   >>> testing.grok_component('folder', Folder)
   True
 
-  >>> root = getRootFolder()
+  >>> root = getSite()
   >>> folder = Folder()
   >>> root['folder'] = folder
 
@@ -56,6 +56,8 @@ We now create a simple content type::
   True
 
   >>> manfred = Document()
+  >>> manfred.__content_type__
+  'a document'
   >>> manfred.title = u"Manfred"
 
 To use the namechooser, we simply adapt our container to the
@@ -124,6 +126,9 @@ The viewlet is registered for the 'AboveBody' viewlet manager::
 As we are currently logged in as Manager, we can see all the
 factories::
 
+  >>> manager = Principal('zope.mgr')
+  >>> request.setPrincipal(manager)
+ 
   >>> for factory in viewlet.factories: print factory['name']
   dolmen.app.container.ftests.Folder
   dolmen.app.container.ftests.Document
@@ -236,7 +241,7 @@ The rendering displays links with icons (if existing)::
 
   >>> print listing.content()
   <div class="folder-listing">
-    <h1></h1>
+    <h1>Content of the folder</h1>
     <div><table class="listing sortable">
     <thead>
       <tr>

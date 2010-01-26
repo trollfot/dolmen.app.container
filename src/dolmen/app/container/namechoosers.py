@@ -7,6 +7,7 @@ from zope.container.interfaces import INameChooser
 
 ATTEMPTS = 100
 
+
 class NormalizingNameChooser(grok.Adapter):
     grok.context(IContainer)
     grok.implements(INameChooser)
@@ -28,20 +29,18 @@ class NormalizingNameChooser(grok.Adapter):
 
         raise ValueError(
             "Cannot find a unique name based on "
-            "`%s` after %d attemps." % (name, ATTEMPTS)
-            )
+            "`%s` after %d attemps." % (name, ATTEMPTS))
 
     def chooseName(self, name, object):
         if not name:
             if IBaseContent.providedBy(object):
                 name = object.title.strip()
-                ascii = normalize('NFKD', name).encode('ascii','ignore')
+                ascii = normalize('NFKD', name).encode('ascii', 'ignore')
                 name = ascii.replace(' ', '_').lower()
             else:
                 NotImplementedError(
                     """NormalizingNameChooser can't choose a name if the
                     parameter name is omited and if the component has no
-                    adapter to INameFromTitle"""
-                    )
+                    adapter to INameFromTitle""")
 
         return self._findUniqueName(name, object)

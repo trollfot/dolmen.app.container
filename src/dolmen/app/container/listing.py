@@ -8,7 +8,7 @@ from zope.component import queryMultiAdapter
 from zope.container.interfaces import IContainer
 
 from dolmen.app import security, layout
-from dolmen.app.container import mf as _
+from dolmen.app.container import MF as _
 from megrok.z3ctable import LinkColumn, ModifiedColumn, table
 
 grok.templatedir("templates")
@@ -18,14 +18,14 @@ class FolderListing(layout.TablePage, layout.ContextualMenuEntry):
     grok.title(_(u"Content"))
     grok.context(IContainer)
     grok.require(security.CanListContent)
-    
+
     batchSize = 20
     startBatchingAt = 20
     cssClassEven = u'even'
     cssClassOdd = u'odd'
     cssClasses = {'table': 'listing sortable'}
     sortOn = None
-    
+
     @property
     def values(self):
         return self.context.values()
@@ -33,6 +33,7 @@ class FolderListing(layout.TablePage, layout.ContextualMenuEntry):
     def update(self):
         layout.TablePage.update(self)
         self.table = self.renderTable()
+        self.label = _("Content of the folder")
 
 
 class Title(LinkColumn):
@@ -48,14 +49,14 @@ class Title(LinkColumn):
     def renderCell(self, item):
         if isinstance(item, PersistentBroken):
             return "Broken item: " + item.__Broken_state__.get('__name__')
-        
+
         title = LinkColumn.renderCell(self, item)
         iconview = queryMultiAdapter(
-            (item, self.table.request),
-            name = "contenttype_icon"
-            )
+            (item, self.table.request), name="contenttype_icon")
+
         if iconview is not None:
             return "%s&nbsp;%s" % (iconview(), title)
+
         return title
 
 
