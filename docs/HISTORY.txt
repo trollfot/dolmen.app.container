@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3 (2010-01-26)
+----------------
+
+* Cleaned up the dependencies : zope.app.testing is no longer used.
+
+
 0.2 (2009-12-26)
 ----------------
 
