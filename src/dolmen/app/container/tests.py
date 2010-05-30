@@ -17,6 +17,8 @@ from zope.site.site import LocalSiteManager, SiteManagerAdapter
 from zope.testing import module
 from zope.traversing.interfaces import ITraversable
 from zope.traversing.testing import setUp
+from grok.testing import grok
+
 
 
 def SiteSetUp(test):

@@ -3,9 +3,10 @@
 import grok
 
 from ZODB.broken import PersistentBroken
-from zope.interface import Interface
 from zope.component import queryMultiAdapter
 from zope.container.interfaces import IContainer
+from zope.i18n import translate
+from zope.interface import Interface
 
 from dolmen.app import security, layout
 from dolmen.app.container import MF as _
@@ -25,6 +26,7 @@ class FolderListing(layout.TablePage, layout.ContextualMenuEntry):
     cssClassOdd = u'odd'
     cssClasses = {'table': 'listing sortable'}
     sortOn = None
+    label = _("Content of the folder")
 
     @property
     def values(self):
@@ -33,11 +35,11 @@ class FolderListing(layout.TablePage, layout.ContextualMenuEntry):
     def update(self):
         layout.TablePage.update(self)
         self.table = self.renderTable()
-        self.label = _("Content of the folder")
+        self.batch = self.renderBatch()
 
 
 class Title(LinkColumn):
-    """Display the name of the content item
+    """Displays the title of the item.
     """
     table(FolderListing)
     grok.context(Interface)
@@ -48,24 +50,20 @@ class Title(LinkColumn):
 
     def renderCell(self, item):
         if isinstance(item, PersistentBroken):
-            return "Broken item: " + item.__Broken_state__.get('__name__')
+            broken = _(
+                "Broken item: ${name}",
+                mapping={"name": item.__Broken_state__.get('__name__')})
+            return translate(broken)
 
-        title = LinkColumn.renderCell(self, item)
-        iconview = queryMultiAdapter(
-            (item, self.table.request), name="contenttype_icon")
-
-        if iconview is not None:
-            return "%s&nbsp;%s" % (iconview(), title)
-
-        return title
+        return LinkColumn.renderCell(self, item)
 
 
 class ModificationDate(ModifiedColumn):
-    """Display the name of the content item
+    """Displays the last modification date.
     """
     table(FolderListing)
     grok.context(Interface)
     grok.name('folderlisting.modified')
 
     weight = 20
-    header = _(u"Modified")
+    header = _(u"Modification date")

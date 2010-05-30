@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import grok
+from unidecode import unidecode
 from unicodedata import normalize
 from dolmen.content import IBaseContent, IContainer
 from zope.container.interfaces import INameChooser

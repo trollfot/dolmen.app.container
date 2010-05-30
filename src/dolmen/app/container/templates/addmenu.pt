@@ -1,7 +1,8 @@
 <dl id="add-menu"
     class="menu additional-actions"
+    i18n:domain="dolmen.app.container"
     tal:condition="viewlet/factories">
-  <dt>Add to folder</dt>
+  <dt i18n:translate="">Add to folder</dt>
   <dd>
     <ul>
       <li tal:repeat="factory viewlet/factories">
