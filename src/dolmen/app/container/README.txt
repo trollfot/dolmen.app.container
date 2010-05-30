@@ -246,16 +246,16 @@ The rendering displays links with icons (if existing)::
     <thead>
       <tr>
         <th>Title</th>
-        <th>Modified</th>
+        <th>Modification date</th>
       </tr>
     </thead>
     <tbody>
       <tr class="even">
-        <td><img src="http://127.0.0.1/@@/dolmen-app-container-ftests-IDocument-contenttype_icon.png" alt="Document" width="16" height="16" border="0" />&nbsp;<a href="http://127.0.0.1/folder/judith">judith</a></td>
+        <td><a href="http://127.0.0.1/folder/judith">judith</a></td>
         <td>None</td>
       </tr>
       <tr class="odd">
-        <td><img src="http://127.0.0.1/@@/dolmen-app-container-ftests-IDocument-contenttype_icon.png" alt="Document" width="16" height="16" border="0" />&nbsp;<a href="http://127.0.0.1/folder/manfred">manfred</a></td>
+        <td><a href="http://127.0.0.1/folder/manfred">manfred</a></td>
         <td>None</td>
       </tr>
       <tr class="even">
@@ -263,7 +263,7 @@ The rendering displays links with icons (if existing)::
         <td></td>
       </tr>
       <tr class="odd">
-        <td><img src="http://127.0.0.1/@@/dolmen-content-interfaces-IContainer-contenttype_icon.png" alt="Container" width="16" height="16" border="0" />&nbsp;<a href="http://127.0.0.1/folder/subfolder">subfolder</a></td>
+        <td><a href="http://127.0.0.1/folder/subfolder">subfolder</a></td>
         <td>None</td>
       </tr>
     </tbody>

@@ -11,7 +11,9 @@
   <include package="zope.securitypolicy" file="meta.zcml" />
 
   <!-- Packages with needed components -->
+  <include package="zope.i18n" />
   <include package="zope.security" />
+  <include package="zope.publisher" />
   <include package="zope.annotation" />
   <include package="zope.browserresource" />
 

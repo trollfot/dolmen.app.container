@@ -4,7 +4,9 @@ Changelog
 0.4 (2010-05-31)
 ----------------
 
-* Added translations (FR)
+* Added translations (FR).
+
+* Removed icons from the folder listing.
 
 
 0.3 (2010-01-26)
