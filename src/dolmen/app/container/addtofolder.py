@@ -5,6 +5,7 @@ import dolmen.content
 
 from dolmen.app import security, layout
 from zope.security.management import checkPermission
+from zope.security.checker import CheckerPublic
 from zope.container.interfaces import IContainer
 from zope.container.constraints import checkFactory
 from zope.component import getUtilitiesFor, getMultiAdapter
@@ -27,6 +28,8 @@ class AddMenu(grok.Viewlet):
             return False
 
         permission = dolmen.content.require.bind().get(factory.factory)
+        if permission == 'zope.Public':
+            permission = CheckerPublic
         return checkPermission(permission, self.context)
 
     def update(self):
@@ -40,13 +43,9 @@ class AddMenu(grok.Viewlet):
             # We iterate and check the factories
             if self.checkFactory(name, factory):
                 factory_class = factory.factory
-                icon_view = getMultiAdapter((factory_class, self.request),
-                                            name='contenttype_icon')
-
                 self.factories.append(dict(
                     name=name,
                     id=name.replace(".", "-"),
-                    icon=icon_view(),
                     url='%s/++add++%s' % (self.contexturl, name),
                     title=factory_class.__content_type__,
                     description=(factory.description or

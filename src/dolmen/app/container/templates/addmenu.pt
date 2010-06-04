@@ -11,8 +11,6 @@
 			   href factory/url;
 			   title factory/description;
 			   alt factory/description">
-	  <tal:icon condition="factory/icon"
-		    content="structure factory/icon" />
 	  <span tal:content="factory/title|factory/name" />
 	</a>
       </li>

@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.0a1 (2010-06-04)
+------------------
+
+* Removed icons from the Add to "Folder" menu.
+
+* We now depend on the newest dolmen.content.
+
+* Fixed a bug where the `zope.Public` permission was not handled like
+  the special public permission it is.
+
+
 0.4 (2010-05-31)
 ----------------
 

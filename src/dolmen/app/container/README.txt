@@ -50,6 +50,7 @@ We now create a simple content type::
 
   >>> class Document(dolmen.content.Content):
   ...   dolmen.content.name('a document')
+  ...   dolmen.content.require('zope.Public')
   ...   implements(IDocument)
 
   >>> testing.grok_component('doc', Document)
@@ -143,14 +144,12 @@ We can test the rendering::
         <li>
   	<a href="http://127.0.0.1/folder/++add++dolmen.app.container.ftests.Folder"
       id="dolmen-app-container-ftests-Folder">
-  	  <img src="http://127.0.0.1/@@/dolmen-content-interfaces-IContainer-contenttype_icon.png" alt="Container" width="16" height="16" border="0" />
   	  <span>a folderish content</span>
   	</a>
         </li>
         <li>
   	<a href="http://127.0.0.1/folder/++add++dolmen.app.container.ftests.Document"
       id="dolmen-app-container-ftests-Document">
-  	  <img src="http://127.0.0.1/@@/dolmen-app-container-ftests-IDocument-contenttype_icon.png" alt="Document" width="16" height="16" border="0" />
   	  <span>a document</span>
   	</a>
         </li>
