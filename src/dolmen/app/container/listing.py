@@ -8,7 +8,6 @@ from dolmen.app.container import MF as _
 from megrok.z3ctable import LinkColumn, ModifiedColumn, table
 
 from ZODB.broken import PersistentBroken
-from zope.component import queryMultiAdapter
 from zope.container.interfaces import IContainer
 from zope.i18n import translate
 from zope.interface import Interface

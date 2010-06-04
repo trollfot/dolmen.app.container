@@ -4,11 +4,11 @@ import grok
 import dolmen.content
 
 from dolmen.app import security, layout
-from zope.security.management import checkPermission
-from zope.security.checker import CheckerPublic
-from zope.container.interfaces import IContainer
+from zope.component import getUtilitiesFor
 from zope.container.constraints import checkFactory
-from zope.component import getUtilitiesFor, getMultiAdapter
+from zope.container.interfaces import IContainer
+from zope.security.checker import CheckerPublic
+from zope.security.management import checkPermission
 
 grok.templatedir("templates")
 
