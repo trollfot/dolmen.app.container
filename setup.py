@@ -7,7 +7,6 @@ readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires=[
-    'Unidecode',
     'ZODB3',
     'dolmen.app.layout',
     'dolmen.app.security',
