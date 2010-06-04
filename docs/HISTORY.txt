@@ -4,6 +4,8 @@ Changelog
 1.0a1 (2010-06-04)
 ------------------
 
+* We now use ``dolmen.menu`` instead of ``megrok.menu``.
+
 * Removed icons from the Add to "Folder" menu.
 
 * We now depend on the newest dolmen.content.
