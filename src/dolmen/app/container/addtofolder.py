@@ -4,7 +4,7 @@ import grok
 import dolmen.content
 
 from dolmen.app import security, layout
-from zope.component import getUtilitiesFor
+from zope.component import getUtilitiesFor, queryMultiAdapter
 from zope.container.constraints import checkFactory
 from zope.container.interfaces import IContainer
 from zope.security.checker import CheckerPublic
@@ -43,8 +43,11 @@ class AddMenu(grok.Viewlet):
             # We iterate and check the factories
             if self.checkFactory(name, factory):
                 factory_class = factory.factory
+                icon_view = queryMultiAdapter(
+                    (factory_class, self.request), name="icon")
                 self.factories.append(dict(
                     name=name,
+                    icon= icon_view and icon_view() or None,
                     id=name.replace(".", "-"),
                     url='%s/++add++%s' % (self.contexturl, name),
                     title=factory_class.__content_type__,

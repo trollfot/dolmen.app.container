@@ -9,6 +9,7 @@ from megrok.z3ctable import LinkColumn, ModifiedColumn, table
 
 from ZODB.broken import PersistentBroken
 from zope.container.interfaces import IContainer
+from zope.component import queryMultiAdapter
 from zope.i18n import translate
 from zope.interface import Interface
 
@@ -56,6 +57,9 @@ class Title(LinkColumn):
                 mapping={"name": item.__Broken_state__.get('__name__')})
             return translate(broken)
 
+        icon_view = queryMultiAdapter((item, self.request), name="icon")
+        if icon_view is not None:
+            return "%s %s" % (icon_view(), LinkColumn.renderCell(self, item))
         return LinkColumn.renderCell(self, item)
 
 
