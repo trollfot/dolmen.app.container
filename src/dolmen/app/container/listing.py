@@ -5,7 +5,7 @@ import grok
 from dolmen import menu
 from dolmen.app import security, layout
 from dolmen.app.container import MF as _
-from megrok.z3ctable import LinkColumn, ModifiedColumn, table
+from megrok.z3ctable import TablePage, LinkColumn, ModifiedColumn, table
 
 from ZODB.broken import PersistentBroken
 from zope.container.interfaces import IContainer
@@ -17,7 +17,7 @@ grok.templatedir("templates")
 
 
 @menu.menuentry(layout.ContextualMenu, order=40)
-class FolderListing(layout.TablePage):
+class FolderListing(TablePage):
     grok.title(_(u"Content"))
     grok.context(IContainer)
     grok.require(security.CanListContent)
@@ -35,7 +35,7 @@ class FolderListing(layout.TablePage):
         return self.context.values()
 
     def update(self):
-        layout.TablePage.update(self)
+        TablePage.update(self)
         self.table = self.renderTable()
         self.batch = self.renderBatch()
 

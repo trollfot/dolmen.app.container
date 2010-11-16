@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0a3 (2010-11-16)
+------------------
+
+* `TablePage` component is now imported from ``megrok.z3ctable``. We
+  can now use the latest ``dolmen.app.layout``.
+
+
 1.0a2 (2010-06-06)
 ------------------
 
