@@ -11,7 +11,6 @@
   <!-- Packages with needed components -->
   <include package="zope.security" />
   <include package="zope.publisher" />
-  <include package="zope.browserresource" />
   <include package="dolmen.app.container" />
 
   <securityPolicy

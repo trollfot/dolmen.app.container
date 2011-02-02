@@ -19,6 +19,7 @@ install_requires=[
     'setuptools',
     'zope.component',
     'zope.container',
+    'zope.dublincore',
     'zope.i18n',
     'zope.i18nmessageid',
     'zope.interface',
@@ -26,8 +27,6 @@ install_requires=[
     ]
 
 tests_require = [
-    'zope.annotation',
-    'zope.browserresource',
     'zope.configuration',
     'zope.principalregistry',
     'zope.publisher',
