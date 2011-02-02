@@ -6,6 +6,7 @@ from dolmen import menu
 from dolmen.app import security, layout
 from dolmen.app.container import MF as _
 from megrok.z3ctable import TablePage, LinkColumn, ModifiedColumn, table
+from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 from ZODB.broken import PersistentBroken
 from zope.container.interfaces import IContainer
@@ -50,6 +51,12 @@ class Title(LinkColumn):
     weight = 10
     header = _(u"Title")
 
+    def getLinkContent(self, item):
+        dc = IDCDescriptiveProperties(item, None)
+        if dc is not None and dc.title:
+            return dc.title
+        return LinkColumn.getLinkContent(self, item)
+
     def renderCell(self, item):
         if isinstance(item, PersistentBroken):
             broken = _(
@@ -72,3 +79,7 @@ class ModificationDate(ModifiedColumn):
 
     weight = 20
     header = _(u"Modification date")
+
+    def renderCell(self, item):
+        value = ModifiedColumn.renderCell(self, item)
+        return value or u""

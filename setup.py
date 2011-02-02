@@ -10,7 +10,7 @@ install_requires=[
     'ZODB3',
     'dolmen.app.layout >= 1.0b1',
     'dolmen.app.security',
-    'dolmen.content',
+    'dolmen.content >= 0.6.1',
     'dolmen.menu',
     'grokcore.component',
     'grokcore.view',
