@@ -12,7 +12,7 @@ Getting started
 We import the Grok, request and authentication tools, in order to use
 them in our tests::
 
-  >>> from grok import testing
+  >>> from grokcore.component import testing
   >>> from zope.component import getMultiAdapter
   >>> from zope.publisher.browser import TestRequest
   >>> from zope.security.testing import Principal, Participation
@@ -58,7 +58,7 @@ We now create a simple content type::
 
   >>> manfred = Document()
   >>> manfred.__content_type__
-  'a document'
+  u'a document'
   >>> manfred.title = u"Manfred"
 
 To use the namechooser, we simply adapt our container to the

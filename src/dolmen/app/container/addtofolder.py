@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import grok
 import dolmen.content
+import grokcore.viewlet as grok
 
 from dolmen.app import security, layout
 from zope.component import getUtilitiesFor, queryMultiAdapter
@@ -47,7 +47,7 @@ class AddMenu(grok.Viewlet):
                     (factory_class, self.request), name="icon")
                 self.factories.append(dict(
                     name=name,
-                    icon= icon_view and icon_view() or None,
+                    icon=(icon_view and icon_view() or None),
                     id=name.replace(".", "-"),
                     url='%s/++add++%s' % (self.contexturl, name),
                     title=factory_class.__content_type__,
