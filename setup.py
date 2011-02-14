@@ -10,9 +10,10 @@ install_requires=[
     'ZODB3',
     'dolmen.app.layout',
     'dolmen.app.security',
-    'dolmen.content',
+    'dolmen.content >= 0.7',
     'dolmen.menu',
     'grokcore.component',
+    'grokcore.view',
     'grokcore.viewlet',
     'megrok.z3ctable',
     'setuptools',
@@ -26,16 +27,15 @@ install_requires=[
     ]
 
 tests_require = [
-    'zope.testing',
-    'zope.securitypolicy',
     'zope.annotation',
-    'zope.browserresource',
     'zope.configuration',
-    'zope.publisher',
-    'zope.site',
-    'zope.traversing',
-    'zope.i18n',
     'zope.principalregistry',
+    'zope.publisher',
+    'zope.schema',
+    'zope.securitypolicy',
+    'zope.site',
+    'zope.testing',
+    'zope.traversing',
     ]
 
 setup(name = name,

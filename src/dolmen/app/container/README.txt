@@ -43,12 +43,13 @@ We create our container type::
 
 We now create a simple content type::
 
+  >>> from zope.schema import TextLine
   >>> from zope.interface import Interface, implements
   >>> from zope.annotation import IAttributeAnnotatable
   >>> from zope.dublincore.property import DCProperty
 
   >>> class IDocument(IAttributeAnnotatable):
-  ...   pass
+  ...   title = TextLine()
 
   >>> class Document(dolmen.content.Content):
   ...   dolmen.content.name('a document')
@@ -227,10 +228,10 @@ First, we reset the container::
 
 We add all kind of contents::
 
-  >>> folder['manfred'] = Document()
+  >>> folder['manfred'] = Document(title=u'Manfred the Great')
   >>> folder['judith'] = Document()
   >>> folder['subfolder'] = Folder()
-  >>> folder['not_dolmen.content.IBaseContent'] = object()
+  >>> folder['not_dolmen.content.IContent'] = object()
 
 Then, we can query the listing view::
 
@@ -257,19 +258,19 @@ The rendering displays links with icons (if existing)::
     <tbody>
       <tr class="even">
         <td><a href="http://127.0.0.1/folder/judith">judith</a></td>
-        <td>None</td>
+        <td></td>
       </tr>
       <tr class="odd">
-        <td><a href="http://127.0.0.1/folder/manfred">manfred</a></td>
-        <td>None</td>
+        <td><a href="http://127.0.0.1/folder/manfred">Manfred the Great</a></td>
+        <td></td>
       </tr>
       <tr class="even">
-        <td><a href="http://127.0.0.1/folder/not_dolmen.content.IBaseContent">not_dolmen.content.IBaseContent</a></td>
+        <td><a href="http://127.0.0.1/folder/not_dolmen.content.IContent">not_dolmen.content.IContent</a></td>
         <td></td>
       </tr>
       <tr class="odd">
         <td><a href="http://127.0.0.1/folder/subfolder">subfolder</a></td>
-        <td>None</td>
+        <td></td>
       </tr>
     </tbody>
   </table></div>

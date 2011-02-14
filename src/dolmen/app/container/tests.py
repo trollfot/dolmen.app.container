@@ -59,6 +59,5 @@ def test_suite():
         globs={"getSite": getSite},
         optionflags=(doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE),
         )
-    #readme.layer = FunctionalLayer
     suite.addTest(readme)
     return suite
