@@ -12,7 +12,7 @@ Getting started
 We import the Grok, request and authentication tools, in order to use
 them in our tests::
 
-  >>> from grok import testing
+  >>> from grokcore.component import testing
   >>> from zope.component import getMultiAdapter
   >>> from zope.publisher.browser import TestRequest
   >>> from zope.security.testing import Principal, Participation
@@ -44,22 +44,22 @@ We create our container type::
 We now create a simple content type::
 
   >>> from zope.interface import Interface, implements
+  >>> from zope.annotation import IAttributeAnnotatable
+  >>> from zope.dublincore.property import DCProperty
 
-  >>> class IDocument(Interface):
+  >>> class IDocument(IAttributeAnnotatable):
   ...   pass
 
   >>> class Document(dolmen.content.Content):
   ...   dolmen.content.name('a document')
   ...   dolmen.content.require('zope.Public')
-  ...   implements(IDocument)
+  ...   dolmen.content.schema(IDocument)
+  ...   title = DCProperty('title')
 
   >>> testing.grok_component('doc', Document)
   True
 
   >>> manfred = Document()
-  >>> manfred.__content_type__
-  'a document'
-  >>> manfred.title = u"Manfred"
 
 To use the namechooser, we simply adapt our container to the
 INameChooser interfaces::
@@ -69,16 +69,22 @@ INameChooser interfaces::
   >>> chooser
   <dolmen.app.container.namechoosers.NormalizingNameChooser object at ...>
   
-If no name is provided, the component uses the object's title to
-compute an id::
+If no name is provided, the component uses the object's classname as an id::
 
   >>> chooser.chooseName(name='', object=manfred)
-  'manfred'
+  'document'
 
 If a name is provided, it is used if possible::
 
   >>> chooser.chooseName(name='furry elephant', object=manfred)
   'furry elephant'
+
+If the object as a title and adapts to ``IDCDescriptiveProperties``,
+the `title` is used::
+
+  >>> manfred.title = u'Manfred'
+  >>> chooser.chooseName(name='', object=manfred)
+  'manfred'
 
 If the name already exists, it adds a number at the end of the id. To
 do that, the name chooser will try all the values from 0 to 100 and

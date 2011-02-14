@@ -15,6 +15,7 @@
   <include package="zope.security" />
   <include package="zope.publisher" />
   <include package="zope.annotation" />
+  <include package="zope.dublincore" />
   <include package="zope.browserresource" />
 
   <include package="dolmen.content" /> 

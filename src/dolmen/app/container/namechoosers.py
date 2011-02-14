@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import grok
+import grokcore.component as grok
 from unicodedata import normalize
-from dolmen.content import IBaseContent, IContainer
+from dolmen.content import IContainer
 from zope.container.interfaces import INameChooser
+from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 ATTEMPTS = 100
 
@@ -16,7 +17,6 @@ class NormalizingNameChooser(grok.Adapter):
         return not name in self.context
 
     def _findUniqueName(self, name, object):
-
         if not name in self.context:
             return name
 
@@ -33,14 +33,12 @@ class NormalizingNameChooser(grok.Adapter):
 
     def chooseName(self, name, object):
         if not name:
-            if IBaseContent.providedBy(object):
-                name = object.title.strip()
+            dc = IDCDescriptiveProperties(object, None)
+            if dc is not None and dc.title:
+                name = dc.title.strip()
                 ascii = normalize('NFKD', name).encode('ascii', 'ignore')
                 name = ascii.replace(' ', '_').lower()
             else:
-                NotImplementedError(
-                    """NormalizingNameChooser can't choose a name if the
-                    parameter name is omited and if the component has no
-                    adapter to INameFromTitle""")
+                name = object.__class__.__name__.lower()
 
         return self._findUniqueName(name, object)

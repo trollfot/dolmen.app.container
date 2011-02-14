@@ -2,21 +2,23 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.app.container'
-version = '1.0a3'
+version = '1.0b2'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires=[
     'ZODB3',
-    'dolmen.app.layout >= 1.0b1',
+    'dolmen.app.layout',
     'dolmen.app.security',
     'dolmen.content',
     'dolmen.menu',
-    'grok',
-    'megrok.z3ctable>=1.4.2',
+    'grokcore.component',
+    'grokcore.viewlet',
+    'megrok.z3ctable',
     'setuptools',
     'zope.component',
     'zope.container',
+    'zope.dublincore',
     'zope.i18n',
     'zope.i18nmessageid',
     'zope.interface',
@@ -57,7 +59,6 @@ setup(name = name,
       extras_require = {'test': tests_require},
       test_suite="dolmen.app.container",
       classifiers = [
-        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Zope3',
         'Intended Audience :: Other Audience',
