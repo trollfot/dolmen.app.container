@@ -1,85 +1,59 @@
 # -*- coding: utf-8 -*-
 
-import grokcore.view as grok
-
-from dolmen import menu
-from dolmen.app import security, layout
+from os import path
+from cromlech.container.interfaces import IContainer
 from dolmen.app.container import MF as _
-from megrok.z3ctable import TablePage, LinkColumn, ModifiedColumn, table
-from zope.dublincore.interfaces import IDCDescriptiveProperties
-
-from ZODB.broken import PersistentBroken
-from zope.container.interfaces import IContainer
-from zope.component import queryMultiAdapter
+from dolmen.app.layout import Page
+from dolmen.forms.base import Fields
+from dolmen.forms.base.interfaces import IFormData, IField
+from dolmen.forms.base.widgets import DisplayFieldWidget
+from dolmen.forms.table import BaseTable
+from dolmen.location import get_absolute_url
+from dolmen.template import TALTemplate
+from grokcore.components import baseclass, adapts, context, name, title
 from zope.i18n import translate
 from zope.interface import Interface
+from zope.location.interfaces import ILocation
 
-grok.templatedir("templates")
+
+TEMPLATE_DIR = path.join(path.dirname(__file__), 'templates')
 
 
-@menu.menuentry(layout.ContextualMenu, order=40)
-class FolderListing(TablePage):
-    grok.title(_(u"Content"))
-    grok.context(IContainer)
-    grok.require(security.CanListContent)
+class FolderListing(BaseTable):
+    title(u"Content")
 
-    batchSize = 20
-    startBatchingAt = 20
-    cssClassEven = u'even'
-    cssClassOdd = u'odd'
-    cssClasses = {'table': 'listing sortable'}
-    sortOn = None
-    label = _("Content of the folder")
+    css_class = "listing sortable"
+
+    fields = Fields(ILocation).omit('__parent__')
+    fields['__name__'].mode = 'link'
 
     @property
-    def values(self):
-        return self.context.values()
+    def title(self):
+        return u"<h1>%s</h1>" % translate(
+            _(u'Folder contents'), context=self.request)
+
+
+class LinkWidget(DisplayFieldWidget):
+    name('link')
+    adapts(IField, IFormData, Interface)
+
+    template = TALTemplate(path.join(TEMPLATE_DIR, 'link.pt'))
 
     def update(self):
-        TablePage.update(self)
-        self.table = self.renderTable()
-        self.batch = self.renderBatch()
+        DisplayFieldWidget.update(self)
+        content = self.form.getContentData().getContent()
+        self.url = get_absolute_url(content, self.request)
 
 
-class Title(LinkColumn):
-    """Displays the title of the item.
-    """
-    table(FolderListing)
-    grok.context(Interface)
-    grok.name('folderlisting.title')
+class ListingPage(Page):
+    baseclass()
+    context(IContainer)
+    name('listing')
+    title(_(u'Folder contents'))
 
-    weight = 10
-    header = _(u"Title")
+    def update(self):
+        self.table = FolderListing(self.context, self.request)
+        self.table.update()
 
-    def getLinkContent(self, item):
-        dc = IDCDescriptiveProperties(item, None)
-        if dc is not None and dc.title:
-            return dc.title
-        return LinkColumn.getLinkContent(self, item)
-
-    def renderCell(self, item):
-        if isinstance(item, PersistentBroken):
-            broken = _(
-                "Broken item: ${name}",
-                mapping={"name": item.__Broken_state__.get('__name__')})
-            return translate(broken)
-
-        icon_view = queryMultiAdapter((item, self.request), name="icon")
-        if icon_view is not None:
-            return "%s %s" % (icon_view(), LinkColumn.renderCell(self, item))
-        return LinkColumn.renderCell(self, item)
-
-
-class ModificationDate(ModifiedColumn):
-    """Displays the last modification date.
-    """
-    table(FolderListing)
-    grok.context(Interface)
-    grok.name('folderlisting.modified')
-
-    weight = 20
-    header = _(u"Modification date")
-
-    def renderCell(self, item):
-        value = ModifiedColumn.renderCell(self, item)
-        return value or u""
+    def render(self):
+        return self.table.render()

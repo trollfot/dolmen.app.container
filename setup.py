@@ -6,19 +6,17 @@ version = '2.0a1'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
-install_requires=[
-    'ZODB3',
-    'dolmen.app.layout',
+install_requires = [
+    'dolmen.app.layout >= 2.0',
     'dolmen.app.security',
+    'dolmen.container',
     'dolmen.content >= 0.7',
     'dolmen.menu',
+    'dolmen.view',
+    'dolmen.viewlet',
     'grokcore.component',
-    'grokcore.view',
-    'grokcore.viewlet',
-    'megrok.z3ctable',
     'setuptools',
     'zope.component',
-    'zope.container',
     'zope.dublincore',
     'zope.i18n',
     'zope.i18nmessageid',
@@ -27,15 +25,10 @@ install_requires=[
     ]
 
 tests_require = [
-    'zope.annotation',
     'zope.configuration',
-    'zope.principalregistry',
-    'zope.publisher',
     'zope.schema',
     'zope.securitypolicy',
-    'zope.site',
     'zope.testing',
-    'zope.traversing',
     ]
 
 setup(name = name,

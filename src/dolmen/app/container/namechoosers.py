@@ -2,9 +2,9 @@
 
 import grokcore.component as grok
 from unicodedata import normalize
-from dolmen.content import IContainer
-from zope.container.interfaces import INameChooser
+from cromlech.container.interfaces import IContainer, INameChooser
 from zope.dublincore.interfaces import IDCDescriptiveProperties
+
 
 ATTEMPTS = 100
 
