@@ -10,7 +10,7 @@ from dolmen.forms.base.widgets import DisplayFieldWidget
 from dolmen.forms.table import BaseTable
 from dolmen.location import get_absolute_url
 from dolmen.template import TALTemplate
-from grokcore.components import baseclass, adapts, context, name, title
+from grokcore.component import baseclass, adapts, context, name, title
 from zope.i18n import translate
 from zope.interface import Interface
 from zope.location.interfaces import ILocation

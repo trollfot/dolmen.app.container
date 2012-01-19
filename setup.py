@@ -11,6 +11,7 @@ install_requires = [
     'dolmen.app.security',
     'dolmen.container',
     'dolmen.content >= 0.7',
+    'dolmen.forms.table >= 2.0',
     'dolmen.menu',
     'dolmen.view',
     'dolmen.viewlet',

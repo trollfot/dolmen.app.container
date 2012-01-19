@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
 
+import uuid
 import grokcore.component as grok
 from unicodedata import normalize
 from cromlech.container.interfaces import IContainer, INameChooser
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 
-ATTEMPTS = 100
+class UUIDNameChooser(grok.Adapter):
+    grok.baseclass()
+    grok.context(IContainer)
+    grok.implements(INameChooser)
+    
+    def checkName(self, name, object):
+        return not name in self.context
+
+    def chooseName(self, name, object):
+        return str(uuid.uuid1())
 
 
 class NormalizingNameChooser(grok.Adapter):
+    grok.baseclass()
     grok.context(IContainer)
     grok.implements(INameChooser)
+
+    retries = 100
 
     def checkName(self, name, object):
         return not name in self.context
@@ -21,7 +34,7 @@ class NormalizingNameChooser(grok.Adapter):
             return name
 
         idx = 1
-        while idx <= ATTEMPTS:
+        while idx <= self.retries:
             new_name = "%s_%d" % (name, idx)
             if not new_name in self.context:
                 return new_name
@@ -29,7 +42,7 @@ class NormalizingNameChooser(grok.Adapter):
 
         raise ValueError(
             "Cannot find a unique name based on "
-            "`%s` after %d attemps." % (name, ATTEMPTS))
+            "`%s` after %d attemps." % (name, self.retries))
 
     def chooseName(self, name, object):
         if not name:

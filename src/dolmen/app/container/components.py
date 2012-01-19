@@ -17,4 +17,4 @@ class AddMenu(addtofolder.AddMenuViewlet):
 @dolmen.menu.menuentry(menus.ContextualMenu)
 class Listing(listing.ListingPage):
     order(50)
-    require(permissions.ListFolder)
+    require(permissions.CanListContent)
