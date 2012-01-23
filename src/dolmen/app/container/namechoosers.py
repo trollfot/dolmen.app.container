@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import uuid
-import grokcore.component as grok
 from unicodedata import normalize
 from cromlech.container.interfaces import IContainer, INameChooser
 from zope.dublincore.interfaces import IDCDescriptiveProperties
+from zope.component import adapts
+from zope.interface import implements
 
 
-class UUIDNameChooser(grok.Adapter):
-    grok.baseclass()
-    grok.context(IContainer)
-    grok.implements(INameChooser)
-    
+class UUIDNameChooser(object):
+    adapts(IContainer)
+    implements(INameChooser)
+
+    def __init__(self, context):
+        self.context = context
+
     def checkName(self, name, object):
         return not name in self.context
 
@@ -19,12 +22,14 @@ class UUIDNameChooser(grok.Adapter):
         return str(uuid.uuid1())
 
 
-class NormalizingNameChooser(grok.Adapter):
-    grok.baseclass()
-    grok.context(IContainer)
-    grok.implements(INameChooser)
+class NormalizingNameChooser(object):
+    adapts(IContainer)
+    implements(INameChooser)
 
     retries = 100
+
+    def __init__(self, context):
+        self.context = context
 
     def checkName(self, name, object):
         return not name in self.context

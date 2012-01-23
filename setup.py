@@ -10,7 +10,7 @@ install_requires = [
     'dolmen.app.layout >= 2.0',
     'dolmen.app.security',
     'dolmen.container',
-    'dolmen.content >= 0.7',
+    'dolmen.content >= 2.0a1',
     'dolmen.forms.table >= 2.0',
     'dolmen.menu',
     'dolmen.view',
