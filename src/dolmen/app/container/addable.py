@@ -21,16 +21,25 @@ def check_factory_permission(container, name, factory):
     """Verifies the factory and the right of the logged user against
     the container and the required permission of the content type.
     """
-    if not checkFactory(container, name, factory):
-        return False
-
     permission = require.bind('zope.Public').get(factory.factory)
     if permission == 'zope.Public':
         permission = CheckerPublic
     return checkPermission(permission, container)
 
 
-class AddMenuViewlet(object):
+def get_valid_factories(container):
+    for name, factory in getUtilitiesFor(dolmen.content.IFactory):
+        if checkFactory(container, name, factory):
+            yield name, factory
+
+
+def get_addable_factories(container):
+    for name, factory in get_valid_factories(container):
+        if check_factory_permission(container, name, factory):
+            yield name, factory
+
+
+class AddMenu(object):
     implements(IRenderer)
 
     template = TALTemplate(os.path.join(TEMPLATE_DIR, 'addmenu.pt'))
@@ -46,26 +55,27 @@ class AddMenuViewlet(object):
     def target_language(self):
         return ILanguage(self.request, None)
 
+    def get_adding_url(self):
+        return get_absolute_url(self.context, self.request) + "/add"
+
     def update(self, *args, **kwargs):
         """Gathers the factories allowed for the context container
         in a list of factories information useable by the template.
         """
-        self.factories = []
-        contexturl = get_absolute_url(self.context, self.request)
+        adding_url = self.get_adding_url()
 
-        for name, factory in getUtilitiesFor(dolmen.content.IFactory):
-            # We iterate and check the factories
-            if check_factory_permission(self.context, name, factory):
-                factory_class = factory.factory
-                self.factories.append(dict(
-                    name=name,
-                    id=name.replace(".", "-"),
-                    url='%s/++add++%s' % (contexturl, name),
-                    title=factory_class.__content_type__,
-                    description=(factory.description or
-                                 factory_class.__doc__),
-                    ))
+        self.factories = []
+        for name, factory in get_addable_factories(self.context):
+            factory_class = factory.factory
+            self.factories.append(dict(
+                name=name,
+                id=name.replace(".", "-"),
+                url='%s/%s' % (adding_url, name),
+                title=factory_class.__content_type__,
+                description=(factory.description or
+                             factory_class.__doc__),
+                ))
 
     def render(self, *args, **kwargs):
-        return self.template(
+        return self.template.render(
             self, target_language=self.target_language, entries=self.factories)

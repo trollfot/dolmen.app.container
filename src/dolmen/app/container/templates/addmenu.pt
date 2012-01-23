@@ -9,7 +9,7 @@
 			   href entry['url'];
 			   title entry['description'];
 			   alt entry['description']">
-	  <span tal:content="entry/title|entry/name" />
+	  <span tal:content="entry['title'] or entry['name']" />
 	</a>
       </li>
     </ul>

@@ -7,29 +7,32 @@ readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires = [
+    'unidecode',
+    'cromlech.browser >= 0.4',
+    'cromlech.container',
+    'cromlech.i18n',
     'dolmen.app.layout >= 2.0',
     'dolmen.app.security',
-    'dolmen.container',
     'dolmen.content >= 2.0a1',
+    'dolmen.forms.base',
     'dolmen.forms.table >= 2.0',
-    'dolmen.menu',
-    'dolmen.view',
-    'dolmen.viewlet',
+    'dolmen.location',
+    'dolmen.template',
     'grokcore.component',
+    'grokcore.security',
     'setuptools',
     'zope.component',
     'zope.dublincore',
     'zope.i18n',
     'zope.i18nmessageid',
     'zope.interface',
+    'zope.location',
     'zope.security',
     ]
 
 tests_require = [
-    'zope.configuration',
     'zope.schema',
-    'zope.securitypolicy',
-    'zope.testing',
+    'cromlech.browser [test]',
     ]
 
 setup(name = name,

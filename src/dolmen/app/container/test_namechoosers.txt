@@ -1,0 +1,103 @@
+====================
+dolmen.app.container
+====================
+
+`dolmen.app.container` provides container-centric components for the
+`Cromlech` framework.
+
+
+Getting started
+===============
+
+  >>> from cromlech.container.components import Container
+  >>> container = Container()
+
+
+Namechoosers
+============
+
+Normalizing name chooser
+------------------------
+
+  >>> from dolmen.app.container import NormalizingNamechooser
+  >>> chooser = NormalizingNamechooser(container)
+
+By default, if the object provided doesn't have title informations, it uses
+the class name::
+
+  >>> content = object()
+  >>> chooser.chooseName('', content)
+  'object'
+
+The chosen name is tested against the content of the container. If the name
+already exists, it tries to add an numeric index suffix::
+
+  >>> container['object'] = content
+  >>> chooser.chooseName('', content)
+  'object_1'
+
+A name can be provided, to override of kind of 'guessing'::
+
+  >>> chooser.chooseName('juliet', content)
+  'juliet'
+  >>> container['juliet'] = content
+
+Note that this name is subject to the numeric suffix also::
+
+  >>> chooser.chooseName('juliet', content)
+  'juliet_1'
+
+The limit of retries is '100' by default. Therefore, if you're unlucky enough
+or if you have a bad naming policy, this might happen::
+
+  >>> for i in range(1, 101):
+  ...     name = 'juliet_%s' % i
+  ...     container[name] = object()
+
+  >>> chooser.chooseName('juliet', content)
+  Traceback (most recent call last):
+  ...
+  ValueError: Cannot find a unique name based on `juliet` after 100 attempts.
+
+This can be configured::
+
+  >>> chooser.retries = 101
+  >>> chooser.chooseName('juliet', content)
+  'juliet_101'
+
+The normalizing name chooser is also sensible to the dublincore info
+of the given object and can use the title::
+
+  >>> from zope.interface import implements
+  >>> from zope.dublincore.interfaces import IDCDescriptiveProperties
+
+  >>> class Lover(object):
+  ...     implements(IDCDescriptiveProperties)
+  ...
+  ...     def __init__(self, title):
+  ...         self.title = title
+  ...         self.description = u"Lover %s" % title
+
+  >>> donjuan = Lover(u'Don Juan')
+  >>> chooser.chooseName('', donjuan)
+  'don_juan'
+
+
+UUID namechooser
+----------------
+
+  >>> import re
+  >>> UUID = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
+
+  >>> def is_uuid(id):
+  ...     return bool(re.search(UUID, id))
+
+  >>> from dolmen.app.container import UUIDNamechooser
+  >>> chooser = UUIDNamechooser(container)
+
+  >>> assert is_uuid(chooser.chooseName('', object()))
+
+
+The name provided is ignored::
+
+  >>> assert is_uuid(chooser.chooseName('quack', object()))

@@ -1,0 +1,159 @@
+====================
+dolmen.app.container
+====================
+
+`dolmen.app.container` provides container-centric components for the
+`Cromlech` framework.
+
+
+Getting started
+===============
+
+Security
+--------
+
+  >>> from zope.security.simplepolicies import ParanoidSecurityPolicy
+  >>> from zope.security.interfaces import IInteraction, ISecurityPolicy
+  >>> from zope.security.management import setSecurityPolicy
+  >>> from zope.interface import implements, classProvides
+
+  >>> class TestPolicy(ParanoidSecurityPolicy):
+  ...
+  ...     def checkPermission(self, permission, object):
+  ...         if permission == "zope.Public":
+  ...             return True
+  ...
+  ...         for p in self.participations:
+  ...	          if (permission == 'zope.ManageContent' and
+  ...                 p.principal.id == 'Master'):
+  ...                 return True
+  ...
+  ...         return False
+  
+  >>> from zope.security.management import setSecurityPolicy, getSecurityPolicy
+  >>> assert setSecurityPolicy(TestPolicy)
+  >>> assert getSecurityPolicy() == TestPolicy
+
+
+Contents
+--------
+
+  >>> from cromlech.container.components import Container
+  >>> container = Container()
+
+  >>> from grokcore.component import testing
+  >>> testing.grok('dolmen.content.meta')
+  
+  >>> from dolmen.content import Content, name, title
+  >>> from grokcore.security import require
+
+  >>> class Politician(Content):
+  ...    name(u'Politician')
+  ...    title(u'Member of a political party')
+  ...    require('zope.ManageContent')
+  
+  >>> class Worker(Content):
+  ...    name(u'Worker')
+  ...    title(u'Member of the working class')
+  ...    require('zope.Public')
+
+  >>> assert testing.grok_component('politician', Politician) is True
+  >>> assert testing.grok_component('worker', Worker) is True
+
+
+Getting the contextually valid factories
+========================================
+
+  >>> from zope.security.management import newInteraction, endInteraction
+  >>> from zope.security.testing import Principal, Participation
+
+  >>> newInteraction(Participation(Principal('John')))
+  
+  >>> from dolmen.app.container import get_valid_factories
+  >>> print list(get_valid_factories(container))
+  ... # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+  [(u'...Politician', <dolmen.content.factoring.Factory object at ...>),
+   (u'...Worker', <dolmen.content.factoring.Factory object at ...>)]
+
+  >>> from dolmen.app.container import get_addable_factories
+  >>> list(get_addable_factories(container))
+  [(u'...Worker', <dolmen.content.factoring.Factory object at ...>)]
+
+  >>> endInteraction()
+
+
+  >>> newInteraction(Participation(Principal('Master')))
+  
+  >>> print list(get_valid_factories(container))
+  ... # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+  [(u'...Politician', <dolmen.content.factoring.Factory object at ...>),
+   (u'...Worker', <dolmen.content.factoring.Factory object at ...>)]
+
+  >>> list(get_addable_factories(container))
+  ... # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+  [(u'...Politician', <dolmen.content.factoring.Factory object at ...>),
+   (u'...Worker', <dolmen.content.factoring.Factory object at ...>)]
+
+  >>> endInteraction()
+
+
+Using constraints
+-----------------
+
+  >>> from zope.interface import Interface, alsoProvides, classImplements
+  >>> from cromlech.container.constraints import contains
+
+  
+  >>> class IPolitician(Interface):
+  ...     pass
+
+
+  >>> class ISenate(Interface):
+  ...     contains(IPolitician)
+
+
+  >>> classImplements(Politician, IPolitician)
+  >>> alsoProvides(container, ISenate)
+
+  >>> newInteraction(Participation(Principal('Master')))
+  
+  >>> print list(get_valid_factories(container))
+  ... # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+  [(u'...Politician', <dolmen.content.factoring.Factory object at ...>)]
+
+  >>> endInteraction()
+
+
+Rendering a adding menu
+=======================
+
+  >>> from dolmen.app.container import AddMenu
+  >>> from cromlech.browser.testing import TestHTTPRequest
+
+  >>> newInteraction(Participation(Principal('Master')))
+
+  >>> request = TestHTTPRequest()
+  >>> menu = AddMenu(container, request)
+
+  >>> menu.update()
+  Traceback (most recent call last):
+  ...
+  LookupError: The path of the application root could not be resolved.
+
+  >>> from cromlech.io import IPublicationRoot
+  >>> alsoProvides(container, IPublicationRoot)
+  >>> menu.update()
+  >>> print menu.render()  # doctest: +NORMALIZE_WHITESPACE
+  <dl id="add-menu" class="menu additional-actions">
+    <dt>Add to folder</dt>
+    <dd>
+      <ul>
+        <li>
+          <a href="http://localhost/add/__main__.Politician"
+             id="__main__-Politician">
+            <span>Politician</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>

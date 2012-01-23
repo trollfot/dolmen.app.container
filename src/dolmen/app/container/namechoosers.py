@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import uuid
-from unicodedata import normalize
+from unidecode import unidecode
 from cromlech.container.interfaces import IContainer, INameChooser
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 from zope.component import adapts
 from zope.interface import implements
 
 
-class UUIDNameChooser(object):
+class UUIDNamechooser(object):
     adapts(IContainer)
     implements(INameChooser)
 
@@ -19,10 +19,14 @@ class UUIDNameChooser(object):
         return not name in self.context
 
     def chooseName(self, name, object):
-        return str(uuid.uuid1())
+        uid = str(uuid.uuid1())
+        if not self.checkName(uid, object):
+            ValueError('Generated UUID %r is already in use in %r' %
+                       (uid, self.context))
+        return uid
 
 
-class NormalizingNameChooser(object):
+class NormalizingNamechooser(object):
     adapts(IContainer)
     implements(INameChooser)
 
@@ -47,15 +51,14 @@ class NormalizingNameChooser(object):
 
         raise ValueError(
             "Cannot find a unique name based on "
-            "`%s` after %d attemps." % (name, self.retries))
+            "`%s` after %d attempts." % (name, self.retries))
 
     def chooseName(self, name, object):
         if not name:
             dc = IDCDescriptiveProperties(object, None)
             if dc is not None and dc.title:
                 name = dc.title.strip()
-                ascii = normalize('NFKD', name).encode('ascii', 'ignore')
-                name = ascii.replace(' ', '_').lower()
+                name = unidecode(name).strip().replace(' ', '_').lower()
             else:
                 name = object.__class__.__name__.lower()
 

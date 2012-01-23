@@ -1,0 +1,3 @@
+<span tal:attributes="id widget.htmlId()">
+  <a tal:attributes="href widget.url" tal:content="widget.inputValue()" />
+</span>
