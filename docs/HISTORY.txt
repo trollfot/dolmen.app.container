@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.1 (2012-01-24)
+------------------
+
+* The factory url in the `AddMenu` is now computed entirely.
+  A helper method has been added (look at addable.py for more info)
+
+
 2.0 (2012-01-24)
 ----------------
 
