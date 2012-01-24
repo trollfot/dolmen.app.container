@@ -9,19 +9,17 @@ from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 
 class Content(object):
-  implements(IDCDescriptiveProperties)
+    implements(IDCDescriptiveProperties)
 
-  def __init__(self, title):
-      self.title = title
-      self.description = u""
+    def __init__(self, title):
+        self.title = title
+        self.description = u""
 
 
 def test_unicode_names():
-    """
-    """
     container = Container()
     chooser = NormalizingNamechooser(container)
-    
+
     jani = Content(u'Jani')
     assert chooser.chooseName('', jani) == 'jani'
 

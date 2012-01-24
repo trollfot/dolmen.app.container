@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0 (2012-01-24)
+----------------
+
+* `dolmen.app.container` is now based on the Cromlech framework.
+  The changes are very important. Please, report to the tests for
+  examples of use.
+
+
 1.0b2 (2011-02-14)
 ------------------
 

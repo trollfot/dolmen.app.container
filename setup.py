@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.app.container'
-version = '2.0a1'
+version = '2.0'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
@@ -11,8 +11,6 @@ install_requires = [
     'cromlech.browser >= 0.4',
     'cromlech.container',
     'cromlech.i18n',
-    'dolmen.app.layout >= 2.0',
-    'dolmen.app.security',
     'dolmen.content >= 2.0a1',
     'dolmen.forms.base',
     'dolmen.forms.table >= 2.0',
@@ -31,7 +29,7 @@ install_requires = [
     ]
 
 tests_require = [
-    'zope.schema',
+    'cromlech.io [test]',
     'cromlech.browser [test]',
     ]
 
@@ -39,7 +37,7 @@ setup(name = name,
       version = version,
       description = 'Containers tools for Dolmen applications',
       long_description = readme + '\n\n' + history,
-      keywords = 'Grok Zope3 CMS Dolmen',
+      keywords = 'Cromlech Dolmen Container',
       author = 'Souheil Chelfouh',
       author_email = 'trollfot@gmail.com',
       url = 'http://gitweb.dolmen-project.org/',
@@ -57,7 +55,6 @@ setup(name = name,
       test_suite="dolmen.app.container",
       classifiers = [
         'Environment :: Web Environment',
-        'Framework :: Zope3',
         'Intended Audience :: Other Audience',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',

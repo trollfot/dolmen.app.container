@@ -2,7 +2,6 @@
 
 from os import path
 from cromlech.browser import IRenderer
-from cromlech.container.interfaces import IContainer
 from dolmen.app.container import MF as _
 from dolmen.forms.base import Fields
 from dolmen.forms.base.interfaces import IFormData, IField
@@ -10,7 +9,7 @@ from dolmen.forms.base.widgets import DisplayFieldWidget
 from dolmen.forms.table import BaseTable
 from dolmen.location import get_absolute_url
 from dolmen.template import TALTemplate
-from grokcore.component import baseclass, adapts, context, name, title
+from grokcore.component import adapts, name, title
 from zope.i18n import translate
 from zope.interface import Interface, implements
 from zope.location.interfaces import ILocation
