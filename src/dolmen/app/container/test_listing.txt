@@ -53,12 +53,17 @@ Adding content
   >>> from grokcore.component import testing
   >>> testing.grok('dolmen.location')
   >>> testing.grok('dolmen.forms.base')
-  >>> testing.grok('dolmen.app.container')
+  >>> testing.grok('dolmen.forms.ztk')
 
-  >>> view.update()  #doctest: +ELLIPSIS
-  Traceback (most recent call last):
-  ...
-  LookupError: The path of the application root could not be resolved.
+  >>> view.update()
+
+  >>> try:
+  ...    view.render()
+  ... except Exception, e:
+  ...     pass
+
+  >>> assert "The path of the application root could not be resolved."
+  ... in str(e)
 
   >>> from cromlech.io import IPublicationRoot
   >>> from zope.interface import directlyProvides
@@ -76,46 +81,32 @@ Adding content
       </thead>
       <tbody>
         <tr>
-  	<td><span id="form-line-0-field-__name__">
-    <a href="http://localhost/janet">janet</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/janet">janet</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-1-field-__name__">
-    <a href="http://localhost/audrey">audrey</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/audrey">audrey</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-2-field-__name__">
-    <a href="http://localhost/auriane">auriane</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/auriane">auriane</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-3-field-__name__">
-    <a href="http://localhost/noemie">noemie</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/noemie">noemie</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-4-field-__name__">
-    <a href="http://localhost/maija">maija</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/maija">maija</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-5-field-__name__">
-    <a href="http://localhost/delphine">delphine</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/delphine">delphine</a>
+	  </td>
         </tr>
         <tr>
-  	<td><span id="form-line-6-field-__name__">
-    <a href="http://localhost/sophie">sophie</a>
-  </span>
-  </td>
+  	  <td><a href="http://localhost/sophie">sophie</a>
+	  </td>
         </tr>
       </tbody>
     </table>

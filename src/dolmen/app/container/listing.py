@@ -32,18 +32,6 @@ class FolderListing(BaseTable):
             _(u'Folder contents'), context=self.request)
 
 
-class LinkWidget(DisplayFieldWidget):
-    name('link')
-    adapts(IField, IFormData, Interface)
-
-    template = TALTemplate(path.join(TEMPLATE_DIR, 'link.pt'))
-
-    def update(self):
-        DisplayFieldWidget.update(self)
-        content = self.form.getContentData().getContent()
-        self.url = get_absolute_url(content, self.request)
-
-
 class ListingRenderer(object):
     implements(IRenderer)
 
