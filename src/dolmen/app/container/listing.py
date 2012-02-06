@@ -1,21 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from os import path
 from cromlech.browser import IRenderer
 from dolmen.app.container import MF as _
 from dolmen.forms.base import Fields
-from dolmen.forms.base.interfaces import IFormData, IField
-from dolmen.forms.base.widgets import DisplayFieldWidget
 from dolmen.forms.table import BaseTable
-from dolmen.location import get_absolute_url
-from dolmen.template import TALTemplate
-from grokcore.component import adapts, name, title
+from grokcore.component import title
 from zope.i18n import translate
-from zope.interface import Interface, implements
+from zope.interface import implements
 from zope.location.interfaces import ILocation
-
-
-TEMPLATE_DIR = path.join(path.dirname(__file__), 'templates')
 
 
 class FolderListing(BaseTable):
