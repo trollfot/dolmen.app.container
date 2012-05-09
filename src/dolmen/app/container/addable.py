@@ -2,7 +2,7 @@
 
 import os.path
 import dolmen.content
-from cromlech.browser import IRenderer
+from cromlech.browser import IRenderable
 from cromlech.container.constraints import checkFactory
 from cromlech.i18n import ILanguage
 from dolmen.location import get_absolute_url
@@ -40,16 +40,13 @@ def get_addable_factories(container):
 
 
 class AddMenu(object):
-    implements(IRenderer)
+    implements(IRenderable)
 
     template = TALTemplate(os.path.join(TEMPLATE_DIR, 'addmenu.pt'))
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
-
-    def namespace(self):
-        return {}
 
     @property
     def target_language(self):
@@ -79,5 +76,6 @@ class AddMenu(object):
                 ))
 
     def render(self, *args, **kwargs):
+        namespace = dict(entries=self.factories)
         return self.template.render(
-            self, target_language=self.target_language, entries=self.factories)
+            self, target_language=self.target_language, **namespace)

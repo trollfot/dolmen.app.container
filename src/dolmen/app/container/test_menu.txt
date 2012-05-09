@@ -43,7 +43,8 @@ Contents
 
   >>> from grokcore.component import testing
   >>> testing.grok('dolmen.content.meta')
-  
+  >>> testing.grok('dolmen.location')
+
   >>> from dolmen.content import Content, name, title
   >>> from grokcore.security import require
 
@@ -128,11 +129,11 @@ Rendering a adding menu
 =======================
 
   >>> from dolmen.app.container import AddMenu
-  >>> from cromlech.browser.testing import TestHTTPRequest
+  >>> from cromlech.browser.testing import TestRequest
 
   >>> newInteraction(Participation(Principal('Master')))
 
-  >>> request = TestHTTPRequest()
+  >>> request = TestRequest()
   >>> menu = AddMenu(container, request)
 
   >>> menu.update()
@@ -140,7 +141,7 @@ Rendering a adding menu
   ...
   LookupError: The path of the application root could not be resolved.
 
-  >>> from cromlech.io import IPublicationRoot
+  >>> from cromlech.browser import IPublicationRoot
   >>> alsoProvides(container, IPublicationRoot)
   >>> menu.update()
   >>> print menu.render()  # doctest: +NORMALIZE_WHITESPACE

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from cromlech.browser import IRenderer
+from cromlech.browser import IRenderable
 from dolmen.app.container import MF as _
 from dolmen.forms.base import Fields
 from dolmen.forms.table import BaseTable
@@ -25,14 +25,11 @@ class FolderListing(BaseTable):
 
 
 class ListingRenderer(object):
-    implements(IRenderer)
+    implements(IRenderable)
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
-
-    def namespace(self):
-        return {}
 
     def update(self):
         self.table = FolderListing(self.context, self.request)

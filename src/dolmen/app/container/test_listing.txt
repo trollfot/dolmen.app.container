@@ -17,9 +17,9 @@ Instanciating a listing view
 ============================
 
   >>> from dolmen.app.container import ListingRenderer
-  >>> from cromlech.browser.testing import TestHTTPRequest
+  >>> from cromlech.browser.testing import TestRequest
 
-  >>> request = TestHTTPRequest()
+  >>> request = TestRequest()
   >>> view = ListingRenderer(container, request)
   >>> view.update()
   >>> print view.render()  #doctest: +NORMALIZE_WHITESPACE
@@ -65,7 +65,7 @@ Adding content
   >>> assert "The path of the application root could not be resolved."
   ... in str(e)
 
-  >>> from cromlech.io import IPublicationRoot
+  >>> from cromlech.browser import IPublicationRoot
   >>> from zope.interface import directlyProvides
   >>> directlyProvides(container, IPublicationRoot)
 

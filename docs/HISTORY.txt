@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.2 (2012-05-09)
+----------------
+
+* Using now the latest changes on the `cromlech` stack. API is unchanged
+  but some versions are now pinned. Please check your version before
+  updating.
+
+
 2.1 (2012-02-06)
 ----------------
 

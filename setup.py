@@ -2,21 +2,21 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.app.container'
-version = '2.1'
+version = '2.2'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires = [
     'unidecode',
-    'cromlech.browser >= 0.4',
+    'cromlech.browser >= 0.5',
     'cromlech.container',
     'cromlech.i18n',
     'dolmen.content >= 2.0a1',
-    'dolmen.forms.base',
+    'dolmen.forms.base >= 2.4',
     'dolmen.forms.ztk >= 2.1.1',
-    'dolmen.forms.table >= 2.0',
-    'dolmen.location',
-    'dolmen.template',
+    'dolmen.forms.table >= 2.1',
+    'dolmen.location >= 0.2',
+    'dolmen.template >= 0.2',
     'grokcore.component',
     'grokcore.security',
     'setuptools',
@@ -31,7 +31,6 @@ install_requires = [
     ]
 
 tests_require = [
-    'cromlech.io [test]',
     'cromlech.browser [test]',
     ]
 
