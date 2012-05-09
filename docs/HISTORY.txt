@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.2.1 (2012-05-09)
+------------------
+
+* Removed the inclusion the `meta.zcml` file from `dolmen.forms.base`.
+  This file does not exist.
+
+
 2.2 (2012-05-09)
 ----------------
 
