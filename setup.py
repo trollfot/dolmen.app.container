@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.app.container'
-version = '2.2.1'
+version = '2.2.2'
 readme = open(join("src", "dolmen", "app", "container", "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
@@ -14,7 +14,7 @@ install_requires = [
     'dolmen.content >= 2.0a1',
     'dolmen.forms.base >= 2.4',
     'dolmen.forms.ztk >= 2.1.1',
-    'dolmen.forms.table >= 2.1',
+    'dolmen.forms.table >= 2.2',
     'dolmen.location >= 0.2',
     'dolmen.template >= 0.2',
     'grokcore.component',
