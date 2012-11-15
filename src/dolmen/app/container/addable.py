@@ -59,6 +59,9 @@ class AddMenu(object):
     def get_factory_url(self, name, factory):
         return u'%s/add/%s' % (self.context_url, name)
 
+    def namespace(self):
+        return {'entries': self.factories}
+
     def update(self, *args, **kwargs):
         """Gathers the factories allowed for the context container
         in a list of factories information useable by the template.
@@ -76,6 +79,5 @@ class AddMenu(object):
                 ))
 
     def render(self, *args, **kwargs):
-        namespace = dict(entries=self.factories)
         return self.template.render(
-            self, target_language=self.target_language, **namespace)
+            self, target_language=self.target_language, **self.namespace())
