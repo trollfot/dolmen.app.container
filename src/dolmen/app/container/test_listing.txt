@@ -21,11 +21,32 @@ Instanciating a listing view
 
   >>> request = TestRequest()
   >>> view = ListingRenderer(container, request)
+
+Oops we need to grok dependencies::
+
+  >>> from grokcore.component import testing
+  >>> testing.grok('dolmen.location')
+  >>> testing.grok('dolmen.forms.base')
+  >>> testing.grok('dolmen.forms.ztk')
+
   >>> view.update()
-  >>> print view.render()  #doctest: +NORMALIZE_WHITESPACE
-  <html><body><div class="table-info">
-     <h1>Folder contents</h1>
-    </div>
+  >>> print view.render().replace('\n\n','\n') #doctest: +NORMALIZE_WHITESPACE
+  <html><body>
+  <h1>Folder contents</h1>
+  <div class="table-info">
+    <table class="listing sortable">
+      <thead>
+        <tr>
+          <th>The name within the parent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td colspan="1">There are no items.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   </body></html>
 
 
@@ -45,17 +66,10 @@ Adding content
   >>> container['noemie'] = Content()
   >>> container['sophie'] = Content()
 
-  >>> view.update()  #doctest: +ELLIPSIS
-  Traceback (most recent call last): 
-    ...
-  ComponentLookupError: (...IWidget>, 'link')
-
-  >>> from grokcore.component import testing
-  >>> testing.grok('dolmen.location')
-  >>> testing.grok('dolmen.forms.base')
-  >>> testing.grok('dolmen.forms.ztk')
-
+  >>> view = ListingRenderer(container, request)
   >>> view.update()
+
+We got an exception as we have no root defined::
 
   >>> try:
   ...    view.render()
@@ -65,48 +79,58 @@ Adding content
   >>> assert "The path of the application root could not be resolved."
   ... in str(e)
 
+Let'st tell our container is root::
+
   >>> from cromlech.browser import IPublicationRoot
   >>> from zope.interface import directlyProvides
   >>> directlyProvides(container, IPublicationRoot)
 
-  >>> view.update()
-  >>> print view.render()  #doctest: +NORMALIZE_WHITESPACE
-  <html><body><div class="table-info">
-    <h1>Folder contents</h1>
+
+  >>> print view.render().replace('\n\n','\n')  #doctest: +NORMALIZE_WHITESPACE
+  <html><body>
+  <h1>Folder contents</h1>
+  <div class="table-info">
     <table class="listing sortable">
       <thead>
         <tr>
-  	<th>The name within the parent</th>
+          <th>The name within the parent</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-  	  <td><a href="http://localhost/janet">janet</a>
-	  </td>
+          <td>
+            <a href="http://localhost/janet">janet</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/audrey">audrey</a>
-	  </td>
+          <td>
+            <a href="http://localhost/audrey">audrey</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/auriane">auriane</a>
-	  </td>
+          <td>
+            <a href="http://localhost/auriane">auriane</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/noemie">noemie</a>
-	  </td>
+          <td>
+            <a href="http://localhost/noemie">noemie</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/maija">maija</a>
-	  </td>
+          <td>
+            <a href="http://localhost/maija">maija</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/delphine">delphine</a>
-	  </td>
+          <td>
+            <a href="http://localhost/delphine">delphine</a>
+          </td>
         </tr>
         <tr>
-  	  <td><a href="http://localhost/sophie">sophie</a>
-	  </td>
+          <td>
+            <a href="http://localhost/sophie">sophie</a>
+          </td>
         </tr>
       </tbody>
     </table>

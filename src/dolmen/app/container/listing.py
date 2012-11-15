@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from cromlech.browser import IRenderable
+from cromlech.browser import HTMLWrapper
 from dolmen.app.container import MF as _
 from dolmen.forms.base import Fields
 from dolmen.forms.table import BaseTable
@@ -15,14 +16,20 @@ class FolderListing(BaseTable):
 
     css_class = "listing sortable"
 
-    fields = Fields(ILocation).omit('__parent__')
-    fields['__name__'].mode = 'link'
+    tableFields = Fields(ILocation).omit('__parent__')
+    tableFields['__name__'].mode = 'link'
 
     @property
     def title(self):
         return u"<h1>%s</h1>" % translate(
             _(u'Folder contents'), context=self.request)
 
+    def render(self, *args, **kwargs):
+        return self.template.render(
+            self, target_language=self.target_language, **self.namespace())
+
+    def updateWidgets(self):
+        return super(FolderListing, self).updateWidgets()
 
 class ListingRenderer(object):
     implements(IRenderable)
@@ -34,6 +41,11 @@ class ListingRenderer(object):
     def update(self):
         self.table = FolderListing(self.context, self.request)
         self.table.update()
+        self.table.updateForm()
 
     def render(self):
-        return self.table.render()
+        html = HTMLWrapper()
+        table = self.table
+        return html('\n' +
+            table.title.encode('utf-8') + '\n' +
+            table.render().encode('utf-8'))
