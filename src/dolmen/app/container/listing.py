@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from cromlech.browser import IRenderable
-from cromlech.browser import HTMLWrapper
+from cromlech.browser import IRenderable, HTMLWrapper
 from dolmen.app.container import MF as _
 from dolmen.forms.base import Fields
 from dolmen.forms.table import BaseTable
@@ -31,15 +30,18 @@ class FolderListing(BaseTable):
     def updateWidgets(self):
         return super(FolderListing, self).updateWidgets()
 
+
 class ListingRenderer(object):
     implements(IRenderable)
 
+    tableFactory = FolderListing
+    
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def update(self):
-        self.table = FolderListing(self.context, self.request)
+        self.table = self.tableFactory(self.context, self.request)
         self.table.update()
         self.table.updateForm()
 
